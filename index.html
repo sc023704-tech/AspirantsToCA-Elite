@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark-blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AspirantsToCA – Elite Suite v4.0</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#070a13">
+</head>
+<body>
+
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-card glass text-center">
+            <div class="vector-logo-box">
+                <svg viewBox="0 0 100 100" class="svg-avatar">
+                    <circle cx="50" cy="50" r="48" fill="#1e293b" stroke="#2563eb" stroke-width="3"/>
+                    <path d="M25 65 L40 30 L55 65 M30 55 L50 55" stroke="#f8fafc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M50 35 L62 25 L75 35 L62 45 Z" fill="#2563eb"/>
+                </svg>
+            </div>
+            <h2>🎓 AspirantsToCA Portal</h2>
+            <div id="auth-error" class="auth-error-msg"></div>
+
+            <div id="login-form-zone">
+                <div class="flex-column">
+                    <input type="text" id="login-username" placeholder="Username">
+                    <input type="password" id="login-password" placeholder="Password">
+                    <button id="btn-login" class="btn btn-primary w-100">Authenticate Portal</button>
+                    <p style="font-size:0.85rem; margin-top:10px;">New User? <span id="go-to-signup" class="clickable-link">Create Portal ID</span></p>
+                </div>
+            </div>
+
+            <div id="signup-form-zone" style="display: none;">
+                <div class="flex-column">
+                    <input type="text" id="signup-username" placeholder="Choose Unique Username">
+                    <input type="password" id="signup-password" placeholder="Set Secure Password">
+                    <button id="btn-signup" class="btn btn-success w-100">Register Credentials</button>
+                    <p style="font-size:0.85rem; margin-top:10px;">Active Account? <span id="go-to-login" class="clickable-link">Sign In</span></p>
+                </div>
+            </div>
+            <div class="shivam-branding" style="margin-top:20px;"><small>⚡ System Architect: <strong>Shivam Choudhary</strong></small></div>
+        </div>
+    </div>
+
+    <div id="app-main-content" style="display: none;">
+        <header class="app-header">
+            <div class="logo-zone flex-row">
+                <span style="font-size:1.3rem;">🎓</span>
+                <div>
+                    <h1>AspirantsToCA</h1>
+                    <p id="live-clock">00:00:00 AM</p>
+                </div>
+            </div>
+            <button id="btn-logout" class="btn btn-danger btn-sm">Exit App</button>
+        </header>
+
+        <main class="app-container">
+            <section id="dashboard" class="app-section active">
+                <div class="welcome-card glass">
+                    <h2>Welcome, <span id="user-display-name">Candidate</span>! 👋</h2>
+                    <p id="current-date" style="font-size:0.85rem; color:var(--text-muted);"></p>
+                    <div class="quote-box margin-top">
+                        <p id="motivational-quote">"Loading target vector..."</p>
+                        <small style="display:block; text-align:right; color:var(--accent-blue); font-weight:bold; margin-top:4px;">— Selected by Shivam Choudhary</small>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>📊 Live Performance Matrix</h3>
+                    <div class="progress-matrix-grid margin-top">
+                        <div class="matrix-item">
+                            <span>📅 Routine Done</span>
+                            <strong id="dash-routine-pct">0%</strong>
+                        </div>
+                        <div class="matrix-item">
+                            <span>📚 Syllabus Complete</span>
+                            <strong id="dash-syllabus-pct">0%</strong>
+                        </div>
+                        <div class="matrix-item">
+                            <span>🏁 Roadmap Track</span>
+                            <strong id="dash-roadmap-pct">0%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom revision-queue-box">
+                    <h3>⏳ Today's Spaced Repetition Reviews</h3>
+                    <div id="revision-queue-container" class="margin-top" style="font-size:0.85rem; display:flex; flex-direction:column; gap:6px;">
+                        <p style="color:var(--text-muted);">No revision logs due for today.</p>
+                    </div>
+                </div>
+
+                <div class="grid-2x2">
+                    <div class="stat-card glass text-center">
+                        <h4 style="color:var(--text-muted);">Target Countdown</h4>
+                        <div id="exam-countdown" class="countdown-display">---</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <h4 style="color:var(--text-muted); text-align:center;">RPG Level Track</h4>
+                        <strong id="rpg-level-title" style="font-size:0.75rem; display:block; text-align:center;">Level 1 - Novice</strong>
+                        <div class="progress-bar-wrapper"><div id="rpg-xp-fill" class="progress-fill"></div></div>
+                    </div>
+                </div>
+
+                <div class="streak-card glass">
+                    <h3>🔥 System Analytics Matrix</h3>
+                    <div class="grid-2x2 text-center">
+                        <div>Current Streak: <strong id="current-streak">0</strong> d</div>
+                        <div>Total Hours: <strong id="hours-total-metric">0.0</strong> h</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="routine" class="app-section">
+                <div class="section-header flex-row" style="justify-content:space-between;">
+                    <h2>📅 Core Custom Routine</h2>
+                    <span id="routine-progress" class="badge-percent">0%</span>
+                </div>
+                <div class="glass card-padding margin-bottom margin-top">
+                    <h4>Add Routine Block</h4>
+                    <div class="todo-form margin-top">
+                        <input type="text" id="routine-time-input" placeholder="e.g., 06:00-09:00 AM">
+                        <input type="text" id="routine-task-input" placeholder="e.g., Law Analysis">
+                        <button id="add-routine-block-btn" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+                <div class="routine-list" id="routine-tasks-container"></div>
+            </section>
+
+            <section id="subjects" class="app-section">
+                <div class="section-header flex-row" style="justify-content:space-between;">
+                    <h2>📚 Syllabus ABC Matrix</h2>
+                    <span id="syllabus-global-progress" class="badge-percent">0%</span>
+                </div>
+                <div class="glass card-padding margin-bottom margin-top">
+                    <h4>Create Custom Subject</h4>
+                    <div class="todo-form margin-top">
+                        <input type="text" id="new-subject-name" placeholder="e.g., Taxation">
+                        <button id="create-subject-btn" class="btn btn-success">Add</button>
+                    </div>
+                </div>
+                <div id="subjects-container"></div>
+            </section>
+
+            <section id="pomodoro" class="app-section">
+                <div class="pomo-card glass text-center">
+                    <h2 id="pomo-label" style="color:var(--accent-blue);">FOCUS BLOCK ACTIVE</h2>
+                    <div class="timer-display" id="timer-display">50:00</div>
+                    <div class="flex-row" style="justify-content:center; gap:10px;">
+                        <button id="pomo-start" class="btn btn-success">Start</button>
+                        <button id="pomo-pause" class="btn btn-warning">Pause</button>
+                        <button id="pomo-reset" class="btn btn-danger">Reset</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="todo" class="app-section">
+                <div class="glass card-padding margin-bottom text-center">
+                    <h3>⏱ Precision Stopwatch</h3>
+                    <div class="timer-display" id="stopwatch-display">00:00:00</div>
+                    <div class="flex-row" style="justify-content:center; gap:8px;">
+                        <button id="sw-start" class="btn btn-success">Engage</button>
+                        <button id="sw-pause" class="btn btn-warning">Pause</button>
+                        <button id="sw-log" class="btn btn-primary">Log</button>
+                    </div>
+                    <p style="font-size:0.8rem; margin-top:8px; color:var(--text-muted);">Today: <strong id="hours-today">0.0</strong> h</p>
+                </div>
+
+                <div class="glass card-padding">
+                    <h3>🎯 Sprint Milestones</h3>
+                    <div class="todo-form">
+                        <input type="text" id="todo-input" placeholder="Enter milestone...">
+                        <select id="todo-priority">
+                            <option value="High">High</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        <button id="add-todo-btn" class="btn btn-primary">+</button>
+                    </div>
+                    <ul class="todo-list" id="todo-list-items"></ul>
+                </div>
+            </section>
+
+            <section id="roadmap" class="app-section">
+                <div class="section-header flex-row" style="justify-content:space-between; margin-bottom:12px;">
+                    <h2>🏁 Roadmap Challenge Scope</h2>
+                    <span id="roadmap-stats" class="badge-percent">0 Days</span>
+                </div>
+                <div class="roadmap-grid" id="roadmap-grid-container"></div>
+            </section>
+
+            <section id="settings" class="app-section">
+                <div class="glass card-padding margin-bottom profile-matrix-zone">
+                    <h3>👤 System Identity Credentials</h3>
+                    <div class="profile-card-layout margin-top">
+                        <div class="profile-meta-row">
+                            <span>Portal Username:</span>
+                            <strong id="prof-display-username">---</strong>
+                        </div>
+                        <div class="profile-meta-row">
+                            <span>Security Token:</span>
+                            <code id="prof-display-token">---</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>🎨 Visual Interface Themes</h3>
+                    <div class="theme-grid margin-top">
+                        <button class="theme-btn btn" data-set-theme="dark-blue" style="background:#0f172a; color:#3b82f6; border:1px solid #3b82f6;">Electric Blue</button>
+                        <button class="theme-btn btn" data-set-theme="oled-black" style="background:#000000; color:#ffffff; border:1px solid #ffffff;">Midnight OLED</button>
+                        <button class="theme-btn btn" data-set-theme="glass-green" style="background:#022c22; color:#10b981; border:1px solid #10b981;">Emerald Glass</button>
+                        <button class="theme-btn btn" data-set-theme="monochrome" style="background:#ffffff; color:#000000; border:1px solid #000000;">Monochrome Premium</button>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>🔄 Inter-Device Sync Engine</h3>
+                    <div class="flex-row">
+                        <button id="btn-export-data" class="btn btn-primary w-100">📤 Export Packs</button>
+                        <button id="btn-trigger-import" class="btn btn-success w-100">📥 Import Packs</button>
+                    </div>
+                    <input type="file" id="import-file-input" style="display:none;" accept=".json">
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>⚙ Target Challenge Scope Control</h3>
+                    <div class="flex-column margin-top">
+                        <label style="font-size:0.85rem; color:var(--text-muted);">Target Attempt Date</label>
+                        <input type="date" id="config-target-date">
+                        <label style="font-size:0.85rem; color:var(--text-muted); margin-top:6px;">Dynamic Challenge Grid Scope (Days)</label>
+                        <input type="number" id="config-challenge-days" min="1" max="365" placeholder="50">
+                        <button id="save-config-btn" class="btn btn-primary margin-top">Commit Dynamic Scope</button>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>📉 Progress Vector Charts Matrix</h3>
+                    <div class="chart-container margin-top">
+                        <label>Routine Vector</label>
+                        <div class="chart-track"><div id="chart-routine" class="chart-fill"></div></div>
+                        <label>Roadmap Challenge Vector</label>
+                        <div class="chart-track"><div id="chart-roadmap" class="chart-fill"></div></div>
+                    </div>
+                </div>
+
+                <div class="glass card-padding margin-bottom">
+                    <h3>📝 Spaced Repetition Diary Logs</h3>
+                    <div class="flex-column">
+                        <textarea id="diary-input" placeholder="Enter micro revision notes formula or sections..." rows="3"></textarea>
+                        <button id="save-diary-btn" class="btn btn-success w-100">Log Diary Entry</button>
+                    </div>
+                    <div id="diary-notes-container" class="margin-top" style="max-height:150px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;"></div>
+                </div>
+
+                <div class="glass card-padding margin-bottom credit-box-zone">
+                    <h4>🛠️ Core Infrastructure Specifications</h4>
+                    <p style="font-size:0.85rem; margin-top:4px;">Architect & Owner: <strong>Shivam Choudhary</strong></p>
+                    <div class="flex-row margin-top" style="gap:10px; flex-wrap: wrap;">
+                        <a href="https://instagram.com/aspiranttoca" target="_blank" class="credit-link">📸 Instagram (@aspiranttoca)</a>
+                        <a href="mailto:feedback@aspiranttoca.com" class="credit-link">📧 System Feedback</a>
+                    </div>
+                </div>
+
+                <div class="glass card-padding">
+                    <button id="reset-btn" class="btn btn-danger w-100">🚨 Wipe Account Profile Pack</button>
+                </div>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="dashboard"><span>🏠</span><small>Home</small></button>
+            <button class="nav-item" data-target="routine"><span>📅</span><small>Routine</small></button>
+            <button class="nav-item" data-target="subjects"><span>📚</span><small>Syllabus</small></button>
+            <button class="nav-item" data-target="pomodoro"><span>⏱</span><small>Focus</small></button>
+            <button class="nav-item" data-target="todo"><span>⚙</span><small>Engine</small></button>
+            <button class="nav-item" data-target="roadmap"><span>🏁</span><small>Days</small></button>
+            <button class="nav-item" data-target="settings"><span>📊</span><small>Metrics</small></button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+              </html>
+
